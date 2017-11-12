@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sed 's/ \+ /\t/g' "$inputfile" > tmpfile 
+mv tmpfile $imputfile
