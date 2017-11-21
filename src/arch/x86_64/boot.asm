@@ -101,7 +101,7 @@ set_up_page_tables:
 	
 	; map each P2 entry to a huge 2MiB page
 	mov ecx, 0	; counter variable
-	jne .map_p2_table
+	jmp .map_p2_table
 	ret
 
 .map_p2_table:

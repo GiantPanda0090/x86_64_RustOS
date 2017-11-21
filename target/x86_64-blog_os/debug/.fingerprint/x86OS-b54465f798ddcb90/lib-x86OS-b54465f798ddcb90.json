@@ -1,0 +1,1 @@
+{"rustc":4215773149422266048,"features":"[]","target":11324234633581694473,"profile":731176819336294830,"deps":[["rlibc v1.0.0",3670932634001304414]],"local":[{"MtimeBased":[[1511281699,282666992],"/home/lqschool/git/x86OS/target/x86_64-blog_os/debug/.fingerprint/x86OS-b54465f798ddcb90/dep-lib-x86OS-b54465f798ddcb90"]}],"rustflags":["--sysroot","/home/lqschool/.xargo"]}
