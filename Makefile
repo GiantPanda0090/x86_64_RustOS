@@ -18,9 +18,18 @@ clean:
 	@rm -r build
 
 run: $(iso)
-	@qemu-system-x86_64 -cdrom $(iso) -cpu kvm64
+	@qemu-system-x86_64 -cdrom $(iso) -cpu kvm64 -s
+
+debug: $(iso)
+		@qemu-system-x86_64 -cdrom $(iso) -s -S
+
+exception: $(iso)
+		qemu-system-x86_64 -d int -no-reboot -cdrom build/os-x86_64.iso
 
 iso: $(iso)
+
+gdb:
+	@rust-os-gdb/bin/rust-gdb "build/kernel-x86_64.bin" -ex "target remote :1234"
 
 $(link):
 	@ln -s libx86OS.a /target/x86_64-blog_os/debug/libblog_os.a

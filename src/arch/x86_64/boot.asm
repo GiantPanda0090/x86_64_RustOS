@@ -5,12 +5,19 @@ bits 32
 start:
 	mov esp, stack_top
 				; check support
+	mov edi, ebx ; boot info -> edi
+
 	call check_multiboot
 	call check_cpuid
 	call check_long_mode
 				;paging
 	call set_up_page_tables ; new
 	call enable_paging	; new
+	;Point p4 table 511th entry to itself.
+	mov eax, p4_table
+	or eax, 0b11 ; present + writable
+	mov [p4_table + 511 * 8], eax
+
 				; load the 64-bit GDT
 	lgdt [gdt64.pointer]
 	jmp gdt64.code:long_mode_start
@@ -26,7 +33,7 @@ error:
 	mov dword [0xb8008], 0x4f204f20
 	mov byte	[0xb800a], al
 	hlt
-	
+
 check_multiboot:
 	cmp eax, 0x36d76289
 	jne .no_multiboot
@@ -98,7 +105,7 @@ set_up_page_tables:
 	or eax, 0b11 ; present + writable
 	mov [p3_table], eax
 
-	
+
 	; map each P2 entry to a huge 2MiB page
 	mov ecx, 0	; counter variable
 	jmp .map_p2_table
@@ -149,7 +156,7 @@ gdt64:
 	dw $ - gdt64 - 1
 	dq gdt64
 
-	
+
 section .bss
 align 4096
 p4_table:
@@ -159,5 +166,5 @@ p3_table:
 p2_table:
 	resb 4096
 stack_bottom:
-	resb 64
+	resb 4096*4
 stack_top:
